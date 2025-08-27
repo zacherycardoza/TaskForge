@@ -9,8 +9,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        // $tasks = Task::latest()->get();
-        $tasks = collect();
+        $tasks = Task::orderBy('order')->get();
         return view('pages.tasks', compact('tasks'));
     }
 
@@ -21,45 +20,46 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'nullable',
-            'due_date' => 'nullable|date',
-            'status' => 'required|in:pending,completed',
-        ]);
+        $request->validate(['name' => 'required|string|max:255']);
+        $task = Task::create(['name' => $request->name]);
 
-        Task::create($validated);
-
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
-    }
-
-    public function show(Task $task)
-    {
-        return view('tasks.show', compact('task'));
-    }
-
-    public function edit(Task $task)
-    {
-        return view('tasks.edit', compact('task'));
+        return response()->json($task);
     }
 
     public function update(Request $request, Task $task)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'nullable',
-            'due_date' => 'nullable|date',
-            'status' => 'required|in:pending,completed',
+        $request->validate(['name' => 'required|string|max:255']);
+        $task->name = $request->name;
+        $task->save();
+
+        return response()->json($task);
+    }
+
+    public function toggle(Task $task)
+    {
+        $task->is_done = !$task->is_done;
+        $task->save();
+
+        return response()->json(['id' => $task->id, 'is_done' => $task->is_done]);
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array'
         ]);
 
-        $task->update($validated);
+        foreach ($request->order as $index => $id) {
+            Task::where('id', $id)->update(['order' => $index + 1]);
+        }
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
+        return response()->json(['status' => 'ok']);
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
-        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+
+        return response()->json(['id' => $task->id]);
     }
 }
