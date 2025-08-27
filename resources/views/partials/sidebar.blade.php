@@ -9,8 +9,6 @@
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}"><i class="ni ni-tv-2 text-primary"></i><span class="nav-link-text ms-1 text-black">Dashboard</span></a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/tasks') }}"><i class="ni ni-bullet-list-67 text-orange"></i><span class="nav-link-text ms-1 text-black">Tasks</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/projects') }}"><i class="ni ni-briefcase-24 text-success"></i><span class="nav-link-text ms-1 text-black">Projects</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/settings') }}"><i class="ni ni-settings-gear-65 text-danger"></i><span class="nav-link-text ms-1 text-black">Settings</span></a></li>
         </ul>
     </div>
 </aside>

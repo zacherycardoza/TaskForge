@@ -12,12 +12,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet">
     @vite('resources/js/app.js')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-200 d-flex flex-column min-vh-100">
     @include('partials.sidebar')
-    <main class="main-content position-relative border-radius-lg" style="margin-left: 250px;">
+    @include('partials.navbar')
 
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-4 flex-fill">
         @yield('content')
     </div>
 
@@ -28,5 +29,6 @@
     <script src="{{ asset('js/core/popper.min.js') }}"></script>
     <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/material-dashboard.min.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>
